@@ -45,13 +45,13 @@ export SEED=42                             # lab rule: 42 primary; 19 / 888 for 
 
 # ── 6. OPTION B: start at step 03 with the provided tutorial data folder ─────
 # Zejian hands over "Rotation_tutorial_data/" (on a hard drive). Per run it holds:
-#   Rotation_tutorial_data/<RUN>/01_scRNA/    Cell Ranger outs (filtered_feature_bc_matrix/, web_summary.html)
+#   <TUTORIAL_DATA>/<RUN>/01_scRNA/    Cell Ranger outs (filtered_feature_bc_matrix/, web_summary.html)
 #                                             + CellBender <RUN>_cellbender_filtered.h5
-#   Rotation_tutorial_data/<RUN>/02_barcode/  <RUN>_allele_table.csv  (Cassiopeia, one table per run)
+#   <TUTORIAL_DATA>/<RUN>/02_barcode/  <RUN>_allele_table.csv  (Cassiopeia, one table per run)
 # To use it: set TUTORIAL_DATA and RUN below, uncomment, then run steps 03 -> 04 -> 06
 # (on HPC with the sbatch files, or on your own machine with run_local_from_step03.sh).
 #
-# export TUTORIAL_DATA=/path/to/Rotation_tutorial_data
+# export TUTORIAL_DATA=/path/to/Rotation_tutorial_data/project1_single_cell_lineage_tracing_mousePCa
 # export RUN=MJZ019                                   # MJZ019 (5 Npp53 mice) or MJZ008 (3 pilot mice)
 # export TSL_LIB=${RUN}
 # export KEEP_SAMPLES="JZ201,JZ202,JZ203,JZ204,JZ205" # MJZ008: "JZ136,JZ137,JZ138"

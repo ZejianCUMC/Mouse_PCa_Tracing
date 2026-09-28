@@ -83,7 +83,7 @@ cohort (25 mice, ~21k tumour cells) runs through the same scripts with bigger re
 
 ### 2b · Alternative start: step 03 with the provided data folder (recommended first)
 
-Zejian gives you a folder **`Rotation_tutorial_data/`** on a hard drive. It already contains the outputs of
+Zejian gives you a folder **`Rotation_tutorial_data/project1_single_cell_lineage_tracing_mousePCa/`** on a hard drive (set `TUTORIAL_DATA` to this folder). It already contains the outputs of
 steps 01, 02 and 05 for two full runs, so you begin at **demultiplexing and cell-type identification**:
 
 | Run | Mice | What it teaches |
