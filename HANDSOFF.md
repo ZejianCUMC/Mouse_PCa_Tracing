@@ -91,13 +91,20 @@ steps 01, 02 and 05 for two full runs, so you begin at **demultiplexing and cell
 | **MJZ019** | JZ201–JZ205, Npp53, Castration ± Enzalutamide (5 hashtags) | the main tutorial run |
 | **MJZ008** | JZ136 (Npp53), JZ137 + JZ138 (Np53Rb1), all Intact (3 hashtags) | a second run to repeat everything on your own |
 
-Per run: Cell Ranger `filtered_feature_bc_matrix/` (GEX + hashtags) and `web_summary.html`, the CellBender
-`*_cellbender_filtered.h5`, and **one allele table for the whole run** (`05_cassiopeia/<RUN>_allele_table.csv`).
+Per run there are two folders:
+
+```
+<RUN>/01_scRNA/     Cell Ranger outs: filtered_feature_bc_matrix/ (GEX + hashtags), web_summary.html
+                    + CellBender <RUN>_cellbender_filtered.h5 (and its QC pdf)      -> input of step 03
+<RUN>/02_barcode/   <RUN>_allele_table.csv: ONE Cassiopeia allele table for the whole run  -> input of step 06
+```
+(`01_scRNA` = outputs of steps 01 + 02; `02_barcode` = output of step 05.)
 Its `README.md` explains every file. Check the copy with `md5sum -c MD5SUMS.txt`. **This is unpublished
 data: never upload it (GitHub, cloud drives, AI tools).**
 
 1. Build the envs once: `bash envs/create_envs.sh seurat scvi cassiopeia`
-2. In `config/config.sh`, fill in and uncomment **section 6 (OPTION B)**: `TUTORIAL_DATA`, `RUN`, `KEEP_SAMPLES`, `WORK`.
+2. In `config/config.sh`, fill in and uncomment **section 6 (OPTION B)**: `TUTORIAL_DATA`, `RUN`, `KEEP_SAMPLES`, `WORK`
+   (it points `CR_OUTS` / `OUT_CB` at `01_scRNA/` and `OUT_CAS` at `02_barcode/`).
 3. Run on your own machine (no SLURM needed, ~16–32 GB RAM):
    ```bash
    bash run_local_from_step03.sh          # 03 -> 04 -> 06, or one step: 03 | 04 | 04b | 06

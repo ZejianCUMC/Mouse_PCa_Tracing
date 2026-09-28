@@ -33,6 +33,7 @@ export KEEP_SAMPLES="JZ202,JZ204"
 
 # ── 4. Output sub-folders (derived; no need to edit) ─────────────────────────
 export OUT_CR=${WORK}/01_cellranger
+export CR_OUTS=${OUT_CR}/${RUN}/outs          # Cell Ranger outs (filtered_feature_bc_matrix/ lives here)
 export OUT_CB=${WORK}/02_cellbender
 export OUT_QC=${WORK}/03_demux_qc
 export OUT_ST=${WORK}/04_cell_states
@@ -43,11 +44,10 @@ export OUT_TREE=${WORK}/06_greedy_tree
 export SEED=42                             # lab rule: 42 primary; 19 / 888 for sensitivity
 
 # ── 6. OPTION B: start at step 03 with the provided tutorial data folder ─────
-# Zejian hands over "Rotation_tutorial_data/" (on a hard drive). It already holds
-# the Cell Ranger + CellBender outputs and one allele table per run:
-#   Rotation_tutorial_data/<RUN>/01_cellranger/<RUN>/outs/...
-#   Rotation_tutorial_data/<RUN>/02_cellbender/<RUN>_cellbender_filtered.h5
-#   Rotation_tutorial_data/<RUN>/05_cassiopeia/<RUN>_allele_table.csv
+# Zejian hands over "Rotation_tutorial_data/" (on a hard drive). Per run it holds:
+#   Rotation_tutorial_data/<RUN>/01_scRNA/    Cell Ranger outs (filtered_feature_bc_matrix/, web_summary.html)
+#                                             + CellBender <RUN>_cellbender_filtered.h5
+#   Rotation_tutorial_data/<RUN>/02_barcode/  <RUN>_allele_table.csv  (Cassiopeia, one table per run)
 # To use it: set TUTORIAL_DATA and RUN below, uncomment, then run steps 03 -> 04 -> 06
 # (on HPC with the sbatch files, or on your own machine with run_local_from_step03.sh).
 #
@@ -56,9 +56,9 @@ export SEED=42                             # lab rule: 42 primary; 19 / 888 for 
 # export TSL_LIB=${RUN}
 # export KEEP_SAMPLES="JZ201,JZ202,JZ203,JZ204,JZ205" # MJZ008: "JZ136,JZ137,JZ138"
 # export WORK=${HOME}/tracing_tutorial/${RUN}         # your outputs (03, 04, 06)
-# export OUT_CR=${TUTORIAL_DATA}/${RUN}/01_cellranger
-# export OUT_CB=${TUTORIAL_DATA}/${RUN}/02_cellbender
-# export OUT_CAS=${TUTORIAL_DATA}/${RUN}/05_cassiopeia
+# export CR_OUTS=${TUTORIAL_DATA}/${RUN}/01_scRNA     # Cell Ranger outs          -> step 03
+# export OUT_CB=${TUTORIAL_DATA}/${RUN}/01_scRNA      # CellBender filtered .h5   -> step 03
+# export OUT_CAS=${TUTORIAL_DATA}/${RUN}/02_barcode   # allele table              -> step 06
 # export OUT_QC=${WORK}/03_demux_qc
 # export OUT_ST=${WORK}/04_cell_states
 # export OUT_TREE=${WORK}/06_greedy_tree

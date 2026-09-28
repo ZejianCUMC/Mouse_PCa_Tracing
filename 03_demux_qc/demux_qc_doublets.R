@@ -13,7 +13,7 @@
 #               Same recipe as the Npp53 cohort (htodemux template + doubletfinder_per_sample.R).
 #               Newer runs with high ambient HTO use CellBender-HTO + demuxmix instead
 #               (see HANDSOFF.md, "Going further").
-# Input       : ${OUT_CR}/${RUN}/outs/filtered_feature_bc_matrix/,
+# Input       : ${CR_OUTS}/filtered_feature_bc_matrix/  (Cell Ranger outs folder),
 #               ${OUT_CB}/${RUN}_cellbender_filtered.h5, ${WORK}/metadata/hash_map.csv
 # Output      : ${OUT_QC}/  {RUN}_qc_clean.RDS, counts.mtx, genes.txt, barcodes.txt,
 #               cell_meta.csv, demux/QC tables + plots
@@ -88,7 +88,7 @@ run_pipeline <- function(input_path, output_dir, ...) {
   keep_samples <- strsplit(env("KEEP_SAMPLES"), ",")[[1]]
 
   # 1. Cell Ranger filtered matrix (list: Gene Expression + Antibody Capture)
-  m  <- Read10X(file.path(input_path, "outs/filtered_feature_bc_matrix"))
+  m  <- Read10X(file.path(input_path, "filtered_feature_bc_matrix"))
   so <- CreateSeuratObject(counts = m$`Gene Expression`)
   so[["percent.mt"]] <- PercentageFeatureSet(so, pattern = p$mt_pattern)
   n0 <- ncol(so)
@@ -156,5 +156,5 @@ run_pipeline <- function(input_path, output_dir, ...) {
 
 # ── CLI ENTRY POINT ──────────────────────────────────────────────────────────
 if (sys.nframe() == 0) {
-  invisible(run_pipeline(file.path(env("OUT_CR"), env("RUN")), env("OUT_QC")))
+  invisible(run_pipeline(env("CR_OUTS"), env("OUT_QC")))
 }
