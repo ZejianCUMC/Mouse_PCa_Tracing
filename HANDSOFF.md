@@ -74,6 +74,10 @@ fastq/TSL/MJZ019TSLsub_R{1,2}.fastq.gz             # lineage amplicon
 manifest.json                                      # how the subsample was made (seed 42)
 ```
 
+If this folder does not exist yet, ask Zejian: it is created once with
+`sbatch 00_make_demo_data/make_demo_data.sbatch`. You can also point `config/config.sh` at any
+other run's FASTQs. The scripts only need the three FASTQ pairs plus the hashtag map in `config/hashtags.sh`.
+
 Because the subsample keeps whole cells, every step behaves like the real data, only faster. The full
 cohort (25 mice, ~21k tumour cells) runs through the same scripts with bigger resources.
 
@@ -100,6 +104,25 @@ Software is already installed in the lab's shared envs (`/groups/ms3625_gp/zw299
 | 03 | `ST` (Seurat 5, DoubletFinder, DropletUtils) | R |
 | 04 | `scvi` (scanpy 1.11, scvi-tools 1.2) | Python |
 | 05, 06 | `cassiopeia_env` (Cassiopeia 2.1) | Python |
+
+**Your own copy of the environments** (on your own Linux machine or HPC space). Specs are in `envs/`, one
+JSON per environment, with versions matched to the lab envs above:
+
+```bash
+bash envs/create_envs.sh              # builds tracing_cellbender, tracing_seurat, tracing_scvi, tracing_cassiopeia
+bash envs/create_envs.sh scvi         # or just one
+```
+
+| Spec | Replaces lab env | Used in |
+|---|---|---|
+| `envs/tracing_cellbender.json` | `cellbender` (CellBender 0.3.0) | 02 |
+| `envs/tracing_seurat.json` (+ DoubletFinder from GitHub, added by the script) | `ST` | 03 |
+| `envs/tracing_scvi.json` | `scvi` | 04 |
+| `envs/tracing_cassiopeia.json` (Cassiopeia from GitHub, pinned commit) | `cassiopeia_env` | 05, 06 |
+
+Cell Ranger is not a conda package: download 10.0.0 from 10x Genomics. The `GRCm39_tracing` genome and
+the `refOct1.fa` recorder reference are lab resources on c2b2 and are not in this public repo. To use your
+own envs, change `ENVS` in `config/config.sh` and the env folder name on the `PATH` line of each sbatch.
 
 **HPC etiquette.** Never run analysis on the login node (it is for editing, `sbatch`, `squeue`, `ls` only).
 Request the CPUs your job actually uses. Check a job within 5 minutes of it starting (`squeue -u $USER`,
@@ -220,7 +243,26 @@ sbatch 06_greedy_tree/run_greedy_tree.sbatch     # array: one task per mouse
 
 ---
 
-## 5 · Concepts to be able to explain after the tutorial
+## 5 · How to read the scripts
+
+Every analysis script has the same layout, so you always know where to look:
+
+```
+# ===== header =====   what the step does, input, output, env
+# ── IMPORTS ──
+# ── DEFAULTS ──        every tunable number, with a comment on why it has that value
+# ── HELPER FUNCTIONS ── small pieces (read these when a step surprises you)
+# ── MAIN PIPELINE FUNCTION ── run_pipeline(): the step, top to bottom, numbered comments
+# ── CLI ENTRY POINT ──
+```
+
+- Each `run_*.sbatch` is the *only* thing you submit. It asks for resources, puts the right env on
+  `PATH`, sources `config/config.sh`, and calls the script. Paths never appear inside the Python or R code.
+- To change a parameter, edit `DEFAULTS` (or the CLI flag, e.g. `--res`) and note what you changed and why.
+- Suggested reading order: `config/config.sh` → `HANDSOFF.md` §4 → the scripts in step order. For
+  each step, predict what the output should look like *before* opening it.
+
+## 6 · Concepts to be able to explain after the tutorial
 
 - Why the cell barcode joins GEX, HTO, and TSL, and why TSL cannot tell mice apart on its own.
 - Hashtag doublets vs same-sample doublets, and why we need both HTODemux and DoubletFinder.
@@ -234,7 +276,7 @@ sbatch 06_greedy_tree/run_greedy_tree.sbatch     # array: one task per mouse
 
 ---
 
-## 6 · Going further: the full lab pipeline (ask Zejian before using)
+## 7 · Going further: the full lab pipeline (ask Zejian before using)
 
 | Topic | Tutorial | Full Npp53 / Npp53Rb1 pipeline |
 |---|---|---|
@@ -249,7 +291,7 @@ Seeds: 42 is primary; 19 and 888 are for sensitivity. Record the seed you used.
 
 ---
 
-## 7 · Troubleshooting
+## 8 · Troubleshooting
 
 | Symptom | Likely cause / fix |
 |---|---|
@@ -260,11 +302,12 @@ Seeds: 42 is primary; 19 and 888 are for sensitivity. Record the seed you used.
 | 04a finds no tumour cells | Check that `GFP` and `mCherry` are in `genes.txt` (they must come from the `GRCm39_tracing` reference) |
 | Cassiopeia killed / very slow at step 8 | Memory. Full libraries need `--mem=384G`. Resubmit and it resumes from the last checkpoint |
 | 06: "only N cells with lineage" | Barcode mismatch. Both sides should be bare 16-bp barcodes; check `cell_states.csv` column `cellBC` |
+| `mamba env create` rejects the .json | Use `envs/create_envs.sh` (it copies the spec to .yml first) |
 | `conda activate` fails in a job | Do not activate. The scripts put `${ENVS}/<env>/bin` on `PATH` |
 
 ---
 
-## 8 · Repository map
+## 9 · Repository map
 
 ```
 config/config.sh                  every path + sample setting (edit WORK only)
@@ -276,6 +319,7 @@ config/hashtags.sh                writes feature_ref.csv + hash_map.csv into ${W
 04_cell_states/                   04a tumour cells, 04b tumour cell states (Python)
 05_cassiopeia/                    lineage FASTQ -> allele table
 06_greedy_tree/                   per-mouse character matrix + VanillaGreedy tree
+envs/                             conda env specs (JSON) + create_envs.sh
 commands.sh                       all submit commands in order
 logs/                             job logs (git-ignored)
 ```

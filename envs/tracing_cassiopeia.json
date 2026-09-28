@@ -1,0 +1,20 @@
+{
+  "name": "tracing_cassiopeia",
+  "channels": ["conda-forge", "bioconda", "nodefaults"],
+  "dependencies": [
+    "python=3.10",
+    "pip",
+    "cython",
+    "cxx-compiler",
+    "numpy",
+    "pandas",
+    "scipy",
+    "matplotlib",
+    "networkx",
+    "pysam",
+    "ete3",
+    {"pip": [
+      "git+https://github.com/YosefLab/Cassiopeia@48ea3426fed45fddd099b51e34e94fe771cddc1f"
+    ]}
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "name": "tracing_scvi",
+  "channels": ["conda-forge", "bioconda", "nodefaults"],
+  "dependencies": [
+    "python=3.10",
+    "numpy=1.26",
+    "pandas=2.2",
+    "scipy",
+    "h5py",
+    "matplotlib",
+    "scikit-learn",
+    "anndata=0.11",
+    "scanpy=1.11",
+    "python-igraph",
+    "leidenalg=0.11",
+    "pytorch",
+    "scvi-tools=1.2.0"
+  ]
+}

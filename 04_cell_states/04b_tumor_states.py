@@ -17,7 +17,7 @@
 #               Cycling and Ionocyte clusters are flagged `exclude_from_tree`
 #               (the Npp53 recipe removes them before tree building).
 #               This is the teaching version. The locked Npp53 procedure is
-#               CHOIR-anchored AMI -> top candidates -> chooseR + sc-SHC (HANDSOFF.md §6).
+#               CHOIR-anchored AMI -> top candidates -> chooseR + sc-SHC (HANDSOFF.md §7).
 # Input       : ${OUT_ST}/tumor_cells.h5ad (raw counts)
 # Output      : ${OUT_ST}/resolution_metrics.csv, cell_states.csv, markers_res*.csv,
 #               tumor_states.h5ad, UMAP/dotplot/stability figures

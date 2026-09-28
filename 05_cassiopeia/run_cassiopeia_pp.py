@@ -19,6 +19,7 @@
 # Validated   : 2026-07-17 on MJZ019/021/022 (full libraries)
 # Usage       : run_cassiopeia_pp.py LIB R1 R2 OUTDIR NTHREADS REF WHITELIST
 # =============================================================================
+# ── IMPORTS ──────────────────────────────────────────────────────────────────
 import os, sys, time
 import pandas as pd
 import cassiopeia as cas
@@ -42,6 +43,7 @@ DEFAULTS = {
     "min_intbc_thresh": 0.05, "inter_doublet_threshold": 0.35, "kinship_thresh": 0.25,
 }
 
+# ── MAIN PIPELINE FUNCTION ───────────────────────────────────────────────────
 def run_pipeline(LIB, R1, R2, OUTDIR, NTHREADS, REF, WHITELIST, **kw):
     p = {**DEFAULTS, **kw}
     os.makedirs(OUTDIR, exist_ok=True)
@@ -111,8 +113,9 @@ def run_pipeline(LIB, R1, R2, OUTDIR, NTHREADS, REF, WHITELIST, **kw):
     log(f"10 DONE allele_table {summary}")
     return {"output_path": ck("allele_table"), "params_used": p, "summary": summary}
 
+# ── CLI ENTRY POINT ──────────────────────────────────────────────────────────
 if __name__ == "__main__":
     if len(sys.argv) != 8:
-        sys.exit(__doc__ if __doc__ else "usage: LIB R1 R2 OUTDIR NTHREADS REF WHITELIST")
+        sys.exit("usage: run_cassiopeia_pp.py LIB R1.fastq.gz R2.fastq.gz OUTDIR NTHREADS REF.fa WHITELIST.txt")
     LIB, R1, R2, OUTDIR, NT, REF, WL = sys.argv[1:]
     run_pipeline(LIB, R1, R2, OUTDIR, int(NT), REF, WL)

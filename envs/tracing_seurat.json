@@ -1,0 +1,19 @@
+{
+  "name": "tracing_seurat",
+  "channels": ["conda-forge", "bioconda", "nodefaults"],
+  "dependencies": [
+    "r-base=4.4",
+    "r-seurat=5.1.0",
+    "r-seuratobject=5.0.2",
+    "r-sctransform",
+    "r-matrix",
+    "r-dplyr",
+    "r-ggplot2",
+    "r-remotes",
+    "r-fields",
+    "r-kernsmooth",
+    "r-rocr",
+    "bioconductor-dropletutils",
+    "bioconductor-glmgampoi"
+  ]
+}

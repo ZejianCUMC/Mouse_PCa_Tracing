@@ -11,3 +11,5 @@
 !.gitignore
 !LICENSE
 !logs/.gitkeep
+# conda environment specs (software versions only, no data)
+!envs/*.json
