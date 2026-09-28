@@ -1,0 +1,13 @@
+# This PUBLIC repository stores scripts and documentation ONLY.
+# Whitelist: ignore everything, then allow code / command / doc files.
+# Never force-add data, metadata tables, allele tables, trees, cell states, h5ad/RDS/loom, figures.
+*
+!*/
+!*.py
+!*.R
+!*.sh
+!*.sbatch
+!*.md
+!.gitignore
+!LICENSE
+!logs/.gitkeep
