@@ -41,3 +41,24 @@ export OUT_TREE=${WORK}/06_greedy_tree
 
 # ── 5. Reproducibility ───────────────────────────────────────────────────────
 export SEED=42                             # lab rule: 42 primary; 19 / 888 for sensitivity
+
+# ── 6. OPTION B: start at step 03 with the provided tutorial data folder ─────
+# Zejian hands over "Rotation_tutorial_data/" (on a hard drive). It already holds
+# the Cell Ranger + CellBender outputs and one allele table per run:
+#   Rotation_tutorial_data/<RUN>/01_cellranger/<RUN>/outs/...
+#   Rotation_tutorial_data/<RUN>/02_cellbender/<RUN>_cellbender_filtered.h5
+#   Rotation_tutorial_data/<RUN>/05_cassiopeia/<RUN>_allele_table.csv
+# To use it: set TUTORIAL_DATA and RUN below, uncomment, then run steps 03 -> 04 -> 06
+# (on HPC with the sbatch files, or on your own machine with run_local_from_step03.sh).
+#
+# export TUTORIAL_DATA=/path/to/Rotation_tutorial_data
+# export RUN=MJZ019                                   # MJZ019 (5 Npp53 mice) or MJZ008 (3 pilot mice)
+# export TSL_LIB=${RUN}
+# export KEEP_SAMPLES="JZ201,JZ202,JZ203,JZ204,JZ205" # MJZ008: "JZ136,JZ137,JZ138"
+# export WORK=${HOME}/tracing_tutorial/${RUN}         # your outputs (03, 04, 06)
+# export OUT_CR=${TUTORIAL_DATA}/${RUN}/01_cellranger
+# export OUT_CB=${TUTORIAL_DATA}/${RUN}/02_cellbender
+# export OUT_CAS=${TUTORIAL_DATA}/${RUN}/05_cassiopeia
+# export OUT_QC=${WORK}/03_demux_qc
+# export OUT_ST=${WORK}/04_cell_states
+# export OUT_TREE=${WORK}/06_greedy_tree

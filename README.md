@@ -4,7 +4,7 @@ This repository saves crucial analysis workflow to handle single cell level line
 It goes from raw 10x scRNA-seq + hashtag + Cas9 lineage-recorder FASTQs to **tumour cell states** and a
 **Cassiopeia greedy lineage tree per mouse**.
 
-**Start here → [HANDSOFF.md](HANDSOFF.md)**, the step-by-step tutorial on a 2-mouse demo dataset (c2b2 HPC).
+**Start here → [HANDSOFF.md](HANDSOFF.md)**, the step-by-step tutorial. Either start from FASTQs on the c2b2 HPC, or start at step 03 on your own machine with the data folder Zejian provides.
 
 ```
 01 Cell Ranger → 02 CellBender → 03 HTODemux + QC + DoubletFinder → 04 tumour cells + cell states

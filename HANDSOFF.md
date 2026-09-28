@@ -81,6 +81,31 @@ other run's FASTQs. The scripts only need the three FASTQ pairs plus the hashtag
 Because the subsample keeps whole cells, every step behaves like the real data, only faster. The full
 cohort (25 mice, ~21k tumour cells) runs through the same scripts with bigger resources.
 
+### 2b · Alternative start: step 03 with the provided data folder (recommended first)
+
+Zejian gives you a folder **`Rotation_tutorial_data/`** on a hard drive. It already contains the outputs of
+steps 01, 02 and 05 for two full runs, so you begin at **demultiplexing and cell-type identification**:
+
+| Run | Mice | What it teaches |
+|---|---|---|
+| **MJZ019** | JZ201–JZ205, Npp53, Castration ± Enzalutamide (5 hashtags) | the main tutorial run |
+| **MJZ008** | JZ136 (Npp53), JZ137 + JZ138 (Np53Rb1), all Intact (3 hashtags) | a second run to repeat everything on your own |
+
+Per run: Cell Ranger `filtered_feature_bc_matrix/` (GEX + hashtags) and `web_summary.html`, the CellBender
+`*_cellbender_filtered.h5`, and **one allele table for the whole run** (`05_cassiopeia/<RUN>_allele_table.csv`).
+Its `README.md` explains every file. Check the copy with `md5sum -c MD5SUMS.txt`. **This is unpublished
+data: never upload it (GitHub, cloud drives, AI tools).**
+
+1. Build the envs once: `bash envs/create_envs.sh seurat scvi cassiopeia`
+2. In `config/config.sh`, fill in and uncomment **section 6 (OPTION B)**: `TUTORIAL_DATA`, `RUN`, `KEEP_SAMPLES`, `WORK`.
+3. Run on your own machine (no SLURM needed, ~16–32 GB RAM):
+   ```bash
+   bash run_local_from_step03.sh          # 03 -> 04 -> 06, or one step: 03 | 04 | 04b | 06
+   RES=0.7 bash run_local_from_step03.sh 04b   # re-run states at your chosen resolution
+   ```
+   On HPC use the step 03 / 04 / 06 sbatch files instead. For 5 mice, submit step 06 with `--array=0-4`.
+4. Then read §4 for steps 03, 04 and 06. Later, do steps 01, 02 and 05 from FASTQs.
+
 ---
 
 ## 3 · Setup (once)
@@ -238,6 +263,7 @@ sbatch 06_greedy_tree/run_greedy_tree.sbatch     # array: one task per mouse
 4. Writes `<SAMPLE>_tree_greedy.nwk`, `character_matrix.csv`, `leaf_states.csv`, `tree_qc.json`, and a PNG.
 - **Check `tree_qc.json`:** cells with lineage vs tumour cells, fraction missing, per-site edit rates, and tree depth.
 - Greedy trees have unit branch lengths and many polytomies (nodes with more than 2 children). That is expected.
+- The array size must equal the number of mice in `KEEP_SAMPLES` (`--array=0-1` for 2 mice, `0-4` for 5).
 - Robustness: `sbatch --export=ALL,SOLVER=nj 06_greedy_tree/run_greedy_tree.sbatch` (also `maxcut`,
   `spectral`, `percolation`). ILP is not used: it never finished at our scale.
 
@@ -320,7 +346,8 @@ config/hashtags.sh                writes feature_ref.csv + hash_map.csv into ${W
 05_cassiopeia/                    lineage FASTQ -> allele table
 06_greedy_tree/                   per-mouse character matrix + VanillaGreedy tree
 envs/                             conda env specs (JSON) + create_envs.sh
-commands.sh                       all submit commands in order
+commands.sh                       all submit commands in order (HPC)
+run_local_from_step03.sh          steps 03 -> 04 -> 06 on your own machine (OPTION B data)
 logs/                             job logs (git-ignored)
 ```
 

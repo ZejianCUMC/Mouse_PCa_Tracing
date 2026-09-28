@@ -44,7 +44,7 @@ DEFAULTS = {
     "boot_frac": 0.8,                    # fraction of cells per bootstrap
     "jac_min": 0.6,                      # stability threshold (median per-cluster Jaccard)
     "min_cluster_cells": 20,             # smaller clusters are flagged "tiny" in the table
-    "exclude_from_hvg": ["GFP", "mCherry", "Cas9", "Cas9-full", "Cre", "Cre-full"],
+    "exclude_from_hvg": ["GFP", "mCherry", "Cas9", "Cas9_full", "Cas9-full", "Cre", "Cre_full", "Cre-full"],
     "exclude_hints": ["Cycling", "Ionocyte"],   # removed before tree building
     "seed": int(os.environ.get("SEED", 42)),
 }

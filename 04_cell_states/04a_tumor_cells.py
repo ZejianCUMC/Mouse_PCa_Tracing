@@ -34,7 +34,7 @@ DEFAULTS = {
     "leiden_res": 0.5,           # coarse clustering for major cell types
     "min_markers": 2,            # a compartment needs >= this many markers present
     "reporter_genes": ["GFP", "mCherry"],   # tumour = all of these > 0 (CellBender counts)
-    "exclude_from_hvg": ["GFP", "mCherry", "Cas9", "Cas9-full", "Cre", "Cre-full"],  # transgenes never drive clustering
+    "exclude_from_hvg": ["GFP", "mCherry", "Cas9", "Cas9_full", "Cas9-full", "Cre", "Cre_full", "Cre-full"],  # transgenes never drive clustering (Seurat turns "_" into "-")
     "host_types": ["Fibroblast", "SmoothMuscle", "Endothelial", "Macrophage_Myeloid", "Tcell_NK", "Bcell"],
     "host_max_reporter_frac": 0.3,   # host cluster = host-type markers AND < 30 % reporter+ cells
                                      # (tumour mesenchyme can look fibroblast-like but is reporter+)
