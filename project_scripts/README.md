@@ -17,6 +17,9 @@ How to read it:
   the c2b2 HPC) are left as they are, so a script runs only where those paths exist. The conda env is named
   in each script header or `.sbatch` file.
 - Seeds are 42 throughout, with 19 and 888 for sensitivity runs.
+- **One representative command per job.** Where a job was run per sample, per run or per batch, only one
+  example is here (for example the MJZ019 Cell Ranger script). The other samples used the same script with
+  their own IDs and paths. Retry copies are left out too.
 - Report names: **Npp53 Part 1** (preprocessing and tumour states), **Npp53 Part 2** (evolution pattern
   profiling), **Npp53Rb1 Part 1** (preprocessing and tumour states), **merged report 1** (merged tumour
   states) and **merged report 2** (fitness risk modules, survival, cell differentiation maps).
@@ -27,8 +30,8 @@ How to read it:
 
 - `npp53_cellranger_cellbender_htodemux/`: Cell Ranger counts (gene expression + hashtag), CellBender
   ambient-RNA correction, HTODemux (`htodemux_drivers/`, singlets kept), DoubletFinder (`df_run.sh`) and the
-  high-quality cell summary (`hq_summary.R`) for runs MJZ019 and MJZ021–024. Makes the per-sample singlet
-  objects (Npp53 Part 1 §1–2).
+  high-quality cell summary (`hq_summary.R`). Makes the per-sample singlet objects (Npp53 Part 1 §1–2). Run
+  MJZ019 is the representative; MJZ021–024 used the same scripts with their own run IDs and hashtag maps.
 - `npp53rb1_demuxmix_scdblfinder/`: CellBender hashtag input (`redemux_prep.R`, `extract_cbHTO.py`), demuxmix
   demultiplexing (`redemux_demuxmix.R`) with a convergence audit (`demuxmix_diag.R`) and the MJZ028 refit,
   scDblFinder (`scdbl_run.R`), then per-library singlet objects (`build_final_mtx.py`, `build_final_seurat.R`)
@@ -93,7 +96,8 @@ How to read it:
 - `cassiopeia_preprocessing/`
   - `original_MJZ19_25_recipe/`: lineage (TSL) FASTQ → allele table; the recipe used for MJZ019–028 (copied from the HPC).
   - `standard/`: the current standard (`min_reads_per_umi = 1`, faster faithful intBC error correction).
-  - `MJZ019_rerun_minreads1_20261004/`: the MJZ019 re-run and its QC against the original.
+  - `MJZ019_rerun_minreads1_20261004/`: the fast finish from error-corrected UMIs used for the MJZ019 re-run
+    (run with the standard script), and its QC against the original run.
 - `allele_tables/`: per-mouse allele tables on the final cohorts, plus the MJZ026–028 allele-table QC.
 - `intbc_error_scan_20261004/`: finds near-duplicate (error) intBCs and writes tree inputs without them.
 - `npp53_trees_v8/`
@@ -101,18 +105,21 @@ How to read it:
   - `run_jungle_one_sample.py`: LBI fitness.
   - `run_phylovelo_one_sample.py`: PhyloVelo pseudotime, with per-sample parameters.
   - `rebuild_sc_fitness_plasticity_v10.py`: the per-cell LBI / plasticity / pseudotime table.
-- `npp53_tree_patches/`: rebuild the tree, LBI and PhyloVelo for single samples, then patch the Npp53 viewer:
-  - JZ136 without error intBCs;
-  - JZ201–205 from the MJZ019 re-run;
-  - JZ201 without one outlier cell.
-
-  The Part 2 cohort analyses use the v8 trees.
+- `npp53_tree_patches/MJZ019_rerun_trees_20261005/`: single-sample rebuilds reuse the `npp53_trees_v8` scripts
+  with new input paths (JZ136 without error intBCs, JZ201–205 from the MJZ019 re-run, JZ201 without one outlier
+  cell). This folder keeps what is specific: the re-run tree inputs, threshold and changed-call checks,
+  heatmaps, and the representative script that swaps rebuilt samples into the Npp53 viewer. The Part 2 cohort
+  analyses use the v8 trees.
 - `npp53rb1_trees/`
-  - `cassiopeia_eight_20260923`: Greedy trees for the first eight mice.
-  - `tree_viewer_20260923`: JZ135 subsamples, alternative solvers, LBI, PhyloVelo and the first viewer builder.
-  - `cassiopeia_mjz026_028_20260925` and `tree_viewer_mjz026_028_20260925`: the MJZ026–028 mice.
-  - `intbcfix_20261004`: JZ137, JZ138 and the JZ135 subsamples rebuilt without error intBCs.
-  - `JZ272_state_min20_20261006` and `state_min20_rebuild_20261006`: rebuilds keeping only states with at least 20 cells.
+  - `cassiopeia_eight_20260923`: the Greedy tree job (prepare, run, sbatch, submit, verify). The MJZ026–028
+    mice and the intBC-fix rebuilds (JZ137, JZ138, JZ135 subsamples) used the same job with their own inputs.
+  - `tree_viewer_20260923`: the alternative-solver / LBI / PhyloVelo job, JZ135 subsamples, job review and the
+    first viewer builder; later batches reused it.
+  - `tree_viewer_mjz026_028_20260925/run_tree_viewer_analysis_excl.py`: the PhyloVelo variant that leaves
+    isolated cells out of the pseudotime fit (one mouse).
+  - `intbcfix_20261004/verify_cassiopeia_eight_subsetaware.py`: verifier for the rebuilt subsampled trees.
+  - `state_min20_rebuild_20261006`: rebuild keeping only states with at least 20 cells (JZ267, JZ269, JZ272,
+    JZ274).
 
 ## 04_barcode_qc
 
@@ -149,7 +156,8 @@ How to read it:
 - `merged_report2_survival/`
   - `01_km_all_cohorts.R`: five-cohort Kaplan–Meier with median and mean splits (§4.8 Fig 4.7–4.8, Tables 4.4–4.5, Appendix A).
   - `appC_pooled/`: pooled-tumour arm; candidate selection, cohorts, GO and rank-1 figures (Appendix C).
-  - `appD_cycling_out/`: the same without cycling cells (Appendix D).
+  - `appD_cycling_out/run_all.sh`: the full round for the arm without cycling cells; Appendix D then used the
+    `appC_pooled` scripts on that arm.
 - `merged_report2_gsea_progression/`: progression GSEA with the current FSU / FSD lists (Appendix E).
 
 ## 07_evolution_features (Npp53 Part 2 §10)
@@ -163,8 +171,8 @@ How to read it:
 
 ## 08_fate_maps_carta
 
-- `npp53_carta_fine12/`: 12-state labels, pruned Greedy and NJ trees, CARTA (Gurobi) for k = 1–8,
-  cross-solver stability and the chord-elbow k*.
+- `npp53_carta_fine12/`: 12-state labels, pruned Greedy and NJ trees, CARTA (Gurobi, one representative
+  `.sbatch`; the NJ and k = 7–8 runs used the same job), cross-solver stability and the chord-elbow k*.
 - `npp53_carta_review/`: DAG extraction and checks, k* curves (Fig 10.3.1), per-sample DAGs and Greedy vs NJ
   (Fig 10.3.2–10.3.4), c7 / Fate-2 GSEA and dotplots (Fig 10.3.7, 10.3.9).
 - `npp53_datadriven_fatemap/`: combined pseudotime, per-arm map (Fig 10.3.5) and cohort map (Fig 10.3.6).
@@ -198,5 +206,7 @@ How to read it:
   - Npp53 Part 1 §6.10 (pyVIPER / ARACNe) and §7 (AR AUCell);
   - the TreeVAE runner;
   - the original Npp53 viewer builder.
+- **Per-sample job copies:** per-sample, per-run, per-batch and retry versions of the job scripts above
+  (also in `local_only/`).
 - **Left out on purpose:** superseded rounds (for example the raw-count fitness rounds and earlier demultiplexing
   and integration rounds), tests, one-off HPC clean-up scripts, and the Jupyter notebooks of the pilot cohort.
