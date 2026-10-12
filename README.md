@@ -14,3 +14,10 @@ It goes from raw 10x scRNA-seq + hashtag + Cas9 lineage-recorder FASTQs to **tum
 
 This repository contains **code only**. No sequencing data, metadata, intermediate files, trees or
 cell-state results are stored here (enforced by `.gitignore`).
+
+## Project scripts (backup of the full analysis)
+
+`project_scripts/` holds the current analysis scripts of the whole tracing project (Npp53, Npp53Rb1 and the
+merged cohort): demultiplexing, cell states, Cassiopeia trees, barcode QC, fitness signatures, survival,
+evolution features and CARTA fate maps. They are organised by stage and are code only, like the rest of this
+repository. **Start with [project_scripts/README.md](project_scripts/README.md).**
