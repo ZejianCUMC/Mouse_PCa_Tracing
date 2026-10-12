@@ -5,11 +5,7 @@
 Written for rotation students joining the tracing project (Shen lab, CUIMC). Maintainer: Zejian Wang.
 Tutorial data: 2 Npp53 mice subsampled from 10x run MJZ019. Everything runs on the c2b2 HPC.
 
-> **Data policy. Read this first.** This repository is **public**. It holds only scripts (`.py .R .sh .sbatch`) and
-> documentation. **Never commit** FASTQs, count matrices, metadata tables, allele tables, character
-> matrices, trees, cell-state labels, `.h5ad/.RDS/.loom` files, or figures. The `.gitignore` is a
-> whitelist that blocks all of those, and you should never use `git add -f`. All data and outputs live on HPC under
-> `${DEMO}` (read-only input) and your own `${WORK}` folder.
+All tutorial scripts and commands are in **`scripts/tutorial/`**; run every command below from that folder.
 
 ---
 
@@ -56,7 +52,7 @@ flowchart LR
 
 ## 2 · The tutorial dataset
 
-The demo FASTQs were made by `00_make_demo_data/` from run **MJZ019**. They keep the reads of:
+The demo FASTQs are a subsample of run **MJZ019** (seed 42). They keep the reads of:
 
 | Mouse | Hashtag | Arm | Cells kept |
 |---|---|---|---|
@@ -74,8 +70,7 @@ fastq/TSL/MJZ019TSLsub_R{1,2}.fastq.gz             # lineage amplicon
 manifest.json                                      # how the subsample was made (seed 42)
 ```
 
-If this folder does not exist yet, ask Zejian: it is created once with
-`sbatch 00_make_demo_data/make_demo_data.sbatch`. You can also point `config/config.sh` at any
+If this folder does not exist yet, ask Zejian, or start with §2b. You can also point `config/config.sh` at any
 other run's FASTQs. The scripts only need the three FASTQ pairs plus the hashtag map in `config/hashtags.sh`.
 
 Because the subsample keeps whole cells, every step behaves like the real data, only faster. The full
@@ -121,11 +116,11 @@ data: never upload it (GitHub, cloud drives, AI tools).**
 2. Clone the repo into your home or group folder:
    ```bash
    git clone https://github.com/ZejianCUMC/Mouse_PCa_Tracing.git
-   cd Mouse_PCa_Tracing
+   cd Mouse_PCa_Tracing/scripts/tutorial
    ```
 3. Edit **one line** in `config/config.sh`: set `WORK` to a folder you own. All outputs go there.
-4. Always submit jobs **from the repository root**. The scripts `source config/config.sh` and write
-   logs to `logs/`.
+4. Always submit jobs **from `scripts/tutorial/`**. The scripts `source config/config.sh` and write
+   logs to `logs/` (both inside `scripts/tutorial/`).
 
 Software is already installed in the lab's shared envs (`/groups/ms3625_gp/zw2994/mamba/envs/`). Nothing needs installing.
 
@@ -137,7 +132,7 @@ Software is already installed in the lab's shared envs (`/groups/ms3625_gp/zw299
 | 04 | `scvi` (scanpy 1.11, scvi-tools 1.2) | Python |
 | 05, 06 | `cassiopeia_env` (Cassiopeia 2.1) | Python |
 
-**Your own copy of the environments** (on your own Linux machine or HPC space). Specs are in `envs/`, one
+**Your own copy of the environments** (on your own Linux machine or HPC space). Specs are in `scripts/tutorial/envs/`, one
 JSON per environment, with versions matched to the lab envs above:
 
 ```bash
@@ -153,7 +148,7 @@ bash envs/create_envs.sh scvi         # or just one
 | `envs/tracing_cassiopeia.json` (Cassiopeia from GitHub, pinned commit) | `cassiopeia_env` | 05, 06 |
 
 Cell Ranger is not a conda package: download 10.0.0 from 10x Genomics. The `GRCm39_tracing` genome and
-the `refOct1.fa` recorder reference are lab resources on c2b2 and are not in this public repo. To use your
+the `refOct1.fa` recorder reference are lab resources on c2b2. To use your
 own envs, change `ENVS` in `config/config.sh` and the env folder name on the `PATH` line of each sbatch.
 
 **HPC etiquette.** Never run analysis on the login node (it is for editing, `sbatch`, `squeue`, `ls` only).
@@ -322,13 +317,15 @@ Every analysis script has the same layout, so you always know where to look:
 
 Seeds: 42 is primary; 19 and 888 are for sensitivity. Record the seed you used.
 
+The scripts of the full pipeline are in `scripts/project/`, organised by stage (see its `README.md`).
+
 ---
 
 ## 8 · Troubleshooting
 
 | Symptom | Likely cause / fix |
 |---|---|
-| `missing env var ...` | You did not submit from the repo root, or `config/config.sh` is not sourced |
+| `missing env var ...` | You did not submit from `scripts/tutorial/`, or `config/config.sh` is not sourced |
 | Cell Ranger: feature reference error | A hashtag in `feature_ref.csv` is not in the library (or one is missing); check `config/hashtags.sh` |
 | CellBender: CUDA / GPU error | Must run on `--partition=gpu` with `module load cuda`; never on the login node |
 | DoubletFinder: stack overflow | `ulimit -s unlimited` is already in the sbatch. Otherwise the script falls back to `pK = 0.09` |
@@ -343,19 +340,21 @@ Seeds: 42 is primary; 19 and 888 are for sensitivity. Record the seed you used.
 ## 9 · Repository map
 
 ```
-config/config.sh                  every path + sample setting (edit WORK only)
-config/hashtags.sh                writes feature_ref.csv + hash_map.csv into ${WORK}/metadata at run time
-00_make_demo_data/                how the demo FASTQs were made (maintainer only)
-01_cellranger/                    Cell Ranger count (GEX + hashtags)
-02_cellbender/                    ambient RNA removal (GPU)
-03_demux_qc/                      HTODemux + QC + DoubletFinder (R)
-04_cell_states/                   04a tumour cells, 04b tumour cell states (Python)
-05_cassiopeia/                    lineage FASTQ -> allele table
-06_greedy_tree/                   per-mouse character matrix + VanillaGreedy tree
-envs/                             conda env specs (JSON) + create_envs.sh
-commands.sh                       all submit commands in order (HPC)
-run_local_from_step03.sh          steps 03 -> 04 -> 06 on your own machine (OPTION B data)
-logs/                             job logs (git-ignored)
+README.md, HANDSOFF.md                     overview and this tutorial
+scripts/tutorial/                          the teaching workflow (run everything from here)
+  config/config.sh                         every path + sample setting (edit WORK only)
+  config/hashtags.sh                       writes feature_ref.csv + hash_map.csv into ${WORK}/metadata at run time
+  01_cellranger/                           Cell Ranger count (GEX + hashtags)
+  02_cellbender/                           ambient RNA removal (GPU)
+  03_demux_qc/                             HTODemux + QC + DoubletFinder (R)
+  04_cell_states/                          04a tumour cells, 04b tumour cell states (Python)
+  05_cassiopeia/                           lineage FASTQ -> allele table
+  06_greedy_tree/                          per-mouse character matrix + VanillaGreedy tree
+  envs/                                    conda env specs (JSON) + create_envs.sh
+  commands.sh                              all submit commands in order (HPC)
+  run_local_from_step03.sh                 steps 03 -> 04 -> 06 on your own machine (OPTION B data)
+  logs/                                    job logs (git-ignored)
+scripts/project/                           the full project's analysis scripts, by stage (see its README.md)
 ```
 
 Key references: Jones et al. 2020 *Genome Biol* (Cassiopeia) · Yang et al. 2022 *Cell* (KP-Tracer) ·
