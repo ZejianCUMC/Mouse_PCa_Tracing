@@ -3,7 +3,7 @@
 # 02 · CellBender remove-background: remove ambient RNA (and ambient hashtag)
 # In : ${OUT_CR}/${RUN}/outs/raw_feature_bc_matrix.h5  (RAW, not filtered!)
 # Out: ${OUT_CB}/${RUN}_cellbender.h5, ..._filtered.h5 (downstream count matrix), .pdf (QC)
-# Submit from repo root:  sbatch 02_cellbender/run_cellbender.sbatch   (GPU job)
+# Submit from scripts/tutorial/:  sbatch 02_cellbender/run_cellbender.sbatch   (GPU job)
 # =============================================================================
 #SBATCH --job-name=cellbender
 #SBATCH --partition=gpu

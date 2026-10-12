@@ -1,15 +1,12 @@
 #!/bin/bash
 # =============================================================================
 # commands.sh — the whole tutorial as a command sheet.
-# Run from the repository root on the c2b2 login node (only submits jobs; no compute here).
+# Run from scripts/tutorial/ on the c2b2 login node (only submits jobs; no compute here).
 # Step by step (recommended the first time): copy one block at a time and check outputs.
 # =============================================================================
 set -euo pipefail
 source config/config.sh
 mkdir -p ${WORK} logs
-
-# 0 · (Zejian only, once) build the subsampled demo FASTQs -> ${DEMO}
-# sbatch 00_make_demo_data/make_demo_data.sbatch
 
 # 1 · Cell Ranger (GEX + hashtags)                         ~1-2 h
 J1=$(sbatch --parsable 01_cellranger/run_cellranger.sbatch)

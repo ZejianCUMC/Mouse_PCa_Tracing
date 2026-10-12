@@ -4,7 +4,7 @@
 # In : ${GEX_FASTQ_DIR}, ${HTO_FASTQ_DIR}   Out: ${OUT_CR}/${RUN}/outs/
 # Key outputs: raw_feature_bc_matrix.h5 (-> CellBender), filtered_feature_bc_matrix/
 #              (-> demux), web_summary.html (check this first!)
-# Submit from repo root:  sbatch 01_cellranger/run_cellranger.sbatch
+# Submit from scripts/tutorial/:  sbatch 01_cellranger/run_cellranger.sbatch
 # Full-size real runs used 12 CPU / 96 GB / --create-bam true; the demo needs far less.
 # =============================================================================
 #SBATCH --job-name=cellranger

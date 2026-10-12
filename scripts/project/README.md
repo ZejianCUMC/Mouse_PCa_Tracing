@@ -1,14 +1,8 @@
-# project_scripts: the scripts behind the Tracing reports (snapshot 2026-10-12)
+# scripts/project: the scripts behind the Tracing reports (snapshot 2026-10-12)
 
 This folder backs up the **current analysis scripts** of the mouse prostate-tumour lineage-tracing project
 (Npp53, Npp53Rb1, and the merged Npp53 + Npp53Rb1 cohort). These scripts built the canonical objects and the
-figures in the lab's internal reports. It sits next to the teaching workflow (`00_…06_` at the repository root),
-which is separate.
-
-**Code only.** No sequencing data, metadata tables, allele tables, character matrices, trees, cell-state
-labels, `.h5ad/.RDS/.loom/.cloupe` files, figures, notebooks or report text are stored here. The repository
-`.gitignore` whitelist enforces this. Report and HTML builders and three analysis scripts whose text holds
-result numbers are kept on the lab drive only (see the end of this file).
+figures in the lab's internal reports. The teaching workflow is separate, in `scripts/tutorial/`.
 
 How to read it:
 - Top-level folders are analysis **stages**. Each subfolder names the model (`npp53`, `npp53rb1`,

@@ -2,7 +2,7 @@
 # =============================================================================
 # config.sh — ONE place for every path / sample setting used by the tutorial.
 # Every step script does:   source config/config.sh
-# Always submit jobs from the repository root (so relative paths resolve).
+# Always submit jobs from scripts/tutorial/ (so relative paths resolve).
 # =============================================================================
 
 # ── 1. Your own output folder (edit this) ────────────────────────────────────
@@ -18,7 +18,7 @@ export TSL_REF=${LAB}/1-project/12-Jingbo/Nov13/refOct1.fa     # lineage-recorde
 export WHITELIST_10XV3=${LAB}/1-project/12-Jingbo/Nov13/3M-3pgex-may-2023.txt   # 10x 3' v3 barcode whitelist
 
 # ── 3. Demo (subsampled) raw data — 2 Npp53 mice from 10x run MJZ019 ─────────
-# Made by 00_make_demo_data/ (Zejian ran this once; students just read it).
+# Prepared once by Zejian on c2b2 (students just read it).
 export DEMO=${LAB}/1-project/12-Jingbo/2-Tracing/teaching_demo_MJZ019
 export GEX_FASTQ_DIR=${DEMO}/fastq/GEX     # MJZ019sub_S1_L001_R{1,2}_001.fastq.gz   (10x 3' GEX)
 export HTO_FASTQ_DIR=${DEMO}/fastq/HTO     # MJZ019Fsub_S1_L001_R{1,2}_001.fastq.gz  (TotalSeq-B hashtags)

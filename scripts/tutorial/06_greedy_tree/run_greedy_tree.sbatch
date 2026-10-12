@@ -2,7 +2,7 @@
 # =============================================================================
 # 06 · One VanillaGreedy lineage tree per mouse (array job, one task per mouse)
 # Needs step 04 (cell_states.csv) and step 05 (allele table).
-# Submit from repo root:  sbatch 06_greedy_tree/run_greedy_tree.sbatch
+# Submit from scripts/tutorial/:  sbatch 06_greedy_tree/run_greedy_tree.sbatch
 # Other solvers (robustness):  sbatch --export=ALL,SOLVER=nj 06_greedy_tree/run_greedy_tree.sbatch
 # =============================================================================
 #SBATCH --job-name=greedy_tree

@@ -3,7 +3,7 @@
 # 04 · Tumour cells + tumour cell states  (python, env scvi)
 #   04a: major types, reporter (GFP & mCherry) -> tumour cells
 #   04b: tumour-only scVI, Leiden sweep + bootstrap stability, markers -> cell_states.csv
-# Submit from repo root:  sbatch 04_cell_states/run_cell_states.sbatch
+# Submit from scripts/tutorial/:  sbatch 04_cell_states/run_cell_states.sbatch
 # Re-run 04b only with a chosen resolution, e.g.:
 #   sbatch --export=ALL,RES=0.7 04_cell_states/run_cell_states.sbatch
 # Demo size (~1-2k cells) trains fine on CPU; full cohorts go to the gpu partition.

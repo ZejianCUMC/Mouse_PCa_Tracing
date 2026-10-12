@@ -1,7 +1,7 @@
 #!/bin/bash
 # =============================================================================
 # 03 · Demultiplex hashtags + QC + DoubletFinder  (R / Seurat, env ST)
-# Submit from repo root:  sbatch 03_demux_qc/run_demux_qc.sbatch
+# Submit from scripts/tutorial/:  sbatch 03_demux_qc/run_demux_qc.sbatch
 # =============================================================================
 #SBATCH --job-name=demux_qc
 #SBATCH --partition=cpu

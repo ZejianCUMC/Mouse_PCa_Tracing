@@ -2,7 +2,7 @@
 # =============================================================================
 # 05 · Cassiopeia preprocessing of the lineage (TSL) library -> allele table
 # Independent of steps 02-04: can be submitted right after the demo data exist.
-# Submit from repo root:  sbatch 05_cassiopeia/run_cassiopeia.sbatch
+# Submit from scripts/tutorial/:  sbatch 05_cassiopeia/run_cassiopeia.sbatch
 # Full libraries: 16 CPU and --mem=384G (error_correct_umis thrashes at 96G on big libs).
 # =============================================================================
 #SBATCH --job-name=cassiopeia_pp

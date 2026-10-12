@@ -6,7 +6,7 @@
 # Before running:
 #   1. bash envs/create_envs.sh seurat scvi cassiopeia     (once)
 #   2. in config/config.sh, fill in and uncomment section 6 (OPTION B)
-# Then, from the repository root:
+# Then, from scripts/tutorial/:
 #   bash run_local_from_step03.sh            # all three steps
 #   bash run_local_from_step03.sh 04         # one step: 03 | 04 | 04b | 06
 #   RES=0.7 bash run_local_from_step03.sh 04b   # re-run states at a chosen resolution
